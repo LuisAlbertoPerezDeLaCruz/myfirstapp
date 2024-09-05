@@ -4,6 +4,6 @@ import { Controller, Get } from '@nestjs/common';
 export class TasksController {
   @Get('/tasks')
   getAllTasks() {
-    return 'All Tasks';
+    return 'Getting all Tasks';
   }
 }
