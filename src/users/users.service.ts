@@ -1,24 +1,30 @@
 import { Injectable } from '@nestjs/common';
-export interface UserType {
-  id: number;
-  name: string;
-  phone: string;
-}
+import { UserDto } from './dtos/user.dto';
+import { CreateUserDto } from './dtos/create-user.dto';
+
 @Injectable()
 export class UsersService {
-  users = [
-    {
-      id: 1,
-      name: 'Joe Doe',
-      phone: '1234567890',
-    },
-    {
-      id: 2,
-      name: 'Jane Doe',
-      phone: '0987654321',
-    },
-  ];
-  getUsers(): UserType[] {
+  users: UserDto[] = [];
+
+  getUsers(): UserDto[] {
     return this.users;
+  }
+
+  getUser(id: number) {
+    const userFound = this.users.find((user) => {
+      return user.id === id;
+    });
+    if (!userFound) {
+      return 'user not found';
+    }
+    return userFound;
+  }
+
+  createUser(user: CreateUserDto) {
+    this.users.push({
+      ...user,
+      id: this.users.length + 1,
+    });
+    return user;
   }
 }
