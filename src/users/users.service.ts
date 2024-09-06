@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { UserDto } from './dtos/user.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  users: UserDto[] = [];
+  users: User[] = [];
 
-  getUsers(): UserDto[] {
+  getUsers(): User[] {
     return this.users;
   }
 
