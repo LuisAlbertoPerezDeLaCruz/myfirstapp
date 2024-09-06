@@ -14,9 +14,6 @@ export class UsersService {
     const userFound = this.users.find((user) => {
       return user.id === id;
     });
-    if (!userFound) {
-      return 'user not found';
-    }
     return userFound;
   }
 
