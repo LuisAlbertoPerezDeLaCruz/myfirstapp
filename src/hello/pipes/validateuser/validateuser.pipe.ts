@@ -1,6 +1,5 @@
 import {
   ArgumentMetadata,
-  HttpCode,
   HttpException,
   HttpStatus,
   Injectable,
