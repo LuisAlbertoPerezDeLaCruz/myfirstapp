@@ -10,6 +10,8 @@ import {
   Param,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
+import { createTaskDto } from './dto/create-task.dto';
+import { updateTaskDto } from './dto/update-task.dto';
 
 @Controller('/tasks')
 export class TasksController {
@@ -28,13 +30,13 @@ export class TasksController {
   }
 
   @Post('')
-  createTask(@Body() body: any) {
+  createTask(@Body() body: createTaskDto) {
     return this.tasksService.createTask(body);
   }
 
   @Put('')
-  updateTask() {
-    return this.tasksService.updateTask();
+  updateTask(@Body() body: updateTaskDto) {
+    return this.tasksService.updateTask(body);
   }
 
   @Delete('')

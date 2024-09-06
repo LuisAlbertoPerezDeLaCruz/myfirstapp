@@ -1,4 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { createTaskDto } from './dto/create-task.dto';
+import { updateTaskDto } from './dto/update-task.dto';
 
 @Injectable()
 export class TasksService {
@@ -17,7 +19,7 @@ export class TasksService {
     return taskFound;
   }
 
-  createTask(task: any) {
+  createTask(task: createTaskDto) {
     console.log(task);
     this.tasks.push({
       ...task,
@@ -26,7 +28,7 @@ export class TasksService {
     return task;
   }
 
-  updateTask() {
+  updateTask(body: updateTaskDto) {
     return 'Actualizando tareas';
   }
 
