@@ -5,11 +5,14 @@ import {
   Get,
   HttpCode,
   Param,
+  Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { FindOneParams } from './dtos/find-one-params';
+import { UpdateUserDto } from './dtos/update-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -35,7 +38,33 @@ export class UsersController {
   @Post()
   @HttpCode(204)
   async createUser(@Body() body: CreateUserDto) {
-    const newUser = await this.usersService.createUser(body);
-    return newUser;
+    const user = await this.usersService.createUser(body);
+    if (!user) {
+      throw new BadRequestException('Invalid request');
+    }
+    return user;
+  }
+
+  @Put('/:id')
+  @HttpCode(204)
+  async updateUser(
+    @Body() body: UpdateUserDto,
+    @Param() params: FindOneParams,
+  ) {
+    const user = await this.usersService.updateUser(body, params.id);
+    if (!user) {
+      throw new BadRequestException('Invalid request');
+    }
+    return user;
+  }
+
+  @Patch('update-age/:id')
+  @HttpCode(204)
+  async updateUserAge(@Body() body: any, @Param() params: FindOneParams) {
+    const user = await this.usersService.updateUserAge(body.age, params.id);
+    if (!user) {
+      throw new BadRequestException('Invalid request');
+    }
+    return user;
   }
 }
