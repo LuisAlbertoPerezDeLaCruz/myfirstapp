@@ -45,9 +45,9 @@ export class UsersService {
     }
   }
 
-  async updateUserAge(age: number, id: string) {
+  updateUserAge(age: number, id: string) {
     try {
-      const updatedUser = await this.prisma.user.update({
+      const updatedUser = this.prisma.user.update({
         where: {
           id: id,
         },

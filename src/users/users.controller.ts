@@ -8,11 +8,13 @@ import {
   Patch,
   Post,
   Put,
+  Res,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { FindOneParams } from './dtos/find-one-params';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { Request, Response } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -60,11 +62,23 @@ export class UsersController {
 
   @Patch('update-age/:id')
   @HttpCode(204)
-  async updateUserAge(@Body() body: any, @Param() params: FindOneParams) {
-    const user = await this.usersService.updateUserAge(body.age, params.id);
-    if (!user) {
-      throw new BadRequestException('Invalid request');
-    }
-    return user;
+  updateUserAge(
+    @Body() body: any,
+    @Param() params: FindOneParams,
+    @Res() response: Response,
+  ) {
+    this.usersService
+      .updateUserAge(body.age, params.id)
+      .then((user) => {
+        return response.status(200).json({
+          user: user,
+          message: 'age updated',
+        });
+      })
+      .catch((err) => {
+        return response.status(404).json({
+          message: err.message,
+        });
+      });
   }
 }
