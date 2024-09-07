@@ -24,9 +24,9 @@ export class UsersController {
 
   @Get('/:id')
   @HttpCode(200)
-  getUser(@Param() params: FindOneParams) {
-    const user = this.usersService.getUser(+params.id);
-    if (user === undefined) {
+  async getUser(@Param() params: FindOneParams) {
+    const user = await this.usersService.getUser(params.id);
+    if (!user) {
       throw new BadRequestException('Invalid user');
     }
     return user;
@@ -34,7 +34,8 @@ export class UsersController {
 
   @Post()
   @HttpCode(204)
-  createUser(@Body() body: CreateUserDto) {
-    return this.usersService.createUser(body);
+  async createUser(@Body() body: CreateUserDto) {
+    const newUser = await this.usersService.createUser(body);
+    return newUser;
   }
 }
