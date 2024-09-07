@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { User } from './entities/user.entity';
 import { PrismaService } from 'src/prisma.service';
@@ -22,18 +22,20 @@ export class UsersService {
     return user;
   }
 
-  async createUser(user: CreateUserDto) {
-    try {
-      const newUser = await this.prisma.user.create({ data: user });
-      return newUser;
-    } catch (error) {
-      return null;
-    }
+  createUser(user: CreateUserDto): any {
+    this.prisma.user
+      .create({ data: user })
+      .then((newUser) => {
+        return newUser;
+      })
+      .catch((error) => {
+        throw new BadRequestException(error.message);
+      });
   }
 
-  async updateUser(user: UpdateUserDto, id: string) {
+  updateUser(user: UpdateUserDto, id: string) {
     try {
-      const updatedUser = await this.prisma.user.update({
+      const updatedUser = this.prisma.user.update({
         where: {
           id: id,
         },
@@ -41,7 +43,7 @@ export class UsersService {
       });
       return updatedUser;
     } catch (error) {
-      return null;
+      throw new BadRequestException(error.message);
     }
   }
 
@@ -55,7 +57,7 @@ export class UsersService {
       });
       return updatedUser;
     } catch (error) {
-      return null;
+      throw new BadRequestException(error.message);
     }
   }
 }
